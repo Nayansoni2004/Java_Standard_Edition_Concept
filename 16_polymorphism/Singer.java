@@ -1,0 +1,3 @@
+class Singer extends Guest {
+    
+}
