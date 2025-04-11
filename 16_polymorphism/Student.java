@@ -1,0 +1,3 @@
+class Student implements User {
+    
+}
