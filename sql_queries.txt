@@ -1,0 +1,565 @@
+                                           LECTURE 1                                     
+show databases;
+
+create database pracdb;
+
+show databases;
+
+use pracdb;
+
+//how to destroy/delete particular database ex:pracdb.
+drop database pracdb;
+
+show databases;
+
+create database pracdb;
+________________________________________________________________________________________________________________
+                                           LECTURE 2
+show tables;
+
+//how to list all tables of any database ex:pracdb.<-database.
+show tables from pracdb;
+
+create table students;
+
+create table students
+(
+    name varchar(20) not null,
+    email varchar(25) not null,
+    password varchar(15) not null
+);
+
+show tables; <-used for listing tables...
+
+describe Students; <-table name is Students.
+
+drop table Students;
+
+show tables;
+________________________________________________________________________________________________________________
+                                           LECTURE 3
+use pracdb;
+
+show tables;
+
+desc Students;
+
+alter table Students add column City varchar(35) null;
+
+desc Students;
+
+alter table Students add column status varchar(35) not null after name
+
+//Suppose hume status nam ka column drop krna h....
+alter table Students drop column status;
+
+desc Students;
+
+//kisi existing column m change kese krte h...
+alter table Students change column email email varchar(50) not null unique;
+
+desc Students;
+________________________________________________________________________________________________________________
+                                           LECTURE 4
+create table countries //<-table name...
+(
+    country_id int not null auto_increment primary key,
+    country varchar(34) not null unique
+);
+
+//how to insert records.
+insert into countries (country) value ('Bharat');
+
+//how to insert multiple records 
+insert into countries (country) values ('US'), ('UK'), ('China');
+
+//how to get all records that user stored in table countries...
+select * from countries; 
+
+//country-id's will get store in ascending order...
+select * from countries order by country_id;
+
+//country_id's will get store in descending order...
+select * from countries order by country_id desc;
+
+//it is redundant to write asc at last,bec. by default records are stored in ascedning order...
+select * from countries order by country_id asc;
+
+//records will get store in alphabetical order of country names...
+select * from countries order by country;
+
+//all records of countries table will be deleted...
+delete from countries;
+
+select * from countries;
+
+insert into countries (country) values ('Bharat'), ('US'), ('UK'), ('China');
+
+select * from countries;
+
+delete from countries;
+
+select * from countries;
+
+insert into countries (country) values ('Bharat'), ('US'), ('UK'), ('China');
+
+delete from countries;
+
+select * from countries;
+
+//index numbering will start from 1...
+alter table countries auto_increment = 1;
+
+insert into countries (country) values('Bharat'), ('US'), ('UK'), ('China');
+
+select * from countries;
+
+select * from countries order by country_id;
+________________________________________________________________________________________________________________
+                                           LECTURE 5
+//how to delete one single record from a database table.
+delete from countries where country_id = 4;
+
+delete from countries where country = 'US';
+
+select * from countries;
+
+delete from countries;
+
+alter table countries auto_increment = 1;
+
+insert into countries (country) values ('Bharat'), ('Nepal'), ('ShreeLanka');
+
+select * from countries;
+
+create table states
+(
+    state_id int not null auto_increment primary key,
+    state varchar(35) not null,
+    country_id int not null
+);
+
+show tables;
+
+desc states;
+
+insert into states (state, country_id)
+values
+('MP', 1), ('UP', 1), ('AP', 1), ('JANAKPUR', 2), ('NARAYNI', 2), ('Uva', 3), ('SouthProvince', 3), ('Wayamba', 3);
+
+select * from states;
+
+insert into states (state, country_id) value ('Gujrat', 12);
+
+select * from states;
+
+alter table states
+add constraint fk_states_countries
+foreign key (country_id)
+references countries(country_id);
+
+select * from countries;
+
+select * from states;
+
+delete from states where state_id = 9;
+
+select * from states;
+
+alter table states
+add constraint fk_states_countries
+foreign key (country_id)
+references countries(country_id);
+
+show indexes from states;
+________________________________________________________________________________________________________________
+                                           LECTURE 6
+insert into states (state, country_id) value ('Maharashtra', 7);
+
+create table cities
+(
+    city_id int not null auto_increment,
+    city varchar(35) not null,
+    state_id int not null,
+    primary key (city_id),
+    constraint fk_cities_states foreign key (state_id) references states(state_id)
+);
+
+show indexes from cities;
+
+drop table students;
+
+create table students
+(
+    student_id int not null auto_increment primary key,
+    name varchar(35) not null,
+    dob date not null,
+    address varchar(500),
+    city_id int not null,
+    state_id int,
+    country_id int,
+    constraint fk_students_cities foreign key (city_id) references cities (city_id),
+    constraint fk_students_states foreign key (state_id) references states (state_id),
+    constraint fk_students_countries foreign key (country_id) references countries (country_id)
+);
+
+show indexes from students;
+
+insert into cities (city, state_id) values ('Jabalpur', 1), ('Bhopal', 1), ('Indore', 1), ('Gwalior', 1), 
+('kanpur', 2), ('Lucknow', 2), ('Allahabad', 2);
+
+select * from cities;
+
+insert into students 
+(name, dob, address, city_id, state_id, country_id)
+value
+('karthik', '1998-09-22', 'sadar bazar', 1, 1, 1);
+
+select * from students;
+
+select state_id from cities where city_id = 1;
+
+alter table students drop column state_id; //<-error...
+
+show indexes from students;
+
+alter table students drop foreign key fk_students_states; //<-error...
+
+desc states;
+
+desc students;
+
+delete from students;
+
+alter table students drop index fk_student_states; //<-error...
+
+alter table students drop column state_id; //<-error...
+
+show indexes from students;
+
+select * from students;
+
+alter table students drop foreign key fk_students_countries;
+
+alter table students drop index fk_students_countries;
+
+desc students;
+
+alter table students drop column country_id;
+
+desc students;
+________________________________________________________________________________________________________________
+                                           LECTURE 7
+select * from cities;
+
+//firing inner-join...
+select city_id, city, state_id, state from cities inner join states where cities.state_id = states.state_id; //error...
+
+//giving table alias-name...
+select city_id, city, c.state_id, state from cities as c inner join states as s where c.state_id = s.state_id;
+________________________________________________________________________________________________________________
+                                           LECTURE 8
+select * from countries;
+
+delete from countries where country_id in (2, 3); //error...
+
+select * from states;
+
+delete from states where state_id>3;
+
+select * from states;
+
+delete from countries where country_id in (2, 3);
+
+select * from countries;
+
+insert into countries (country) value ('US');
+
+delete from countries where country = 'US';
+
+alter table countries auto_increment = 2;
+
+insert into countries (country) value ('US');
+
+select * from countries;
+
+insert into states(state, country_id) values ('Arizana', 2), ('Indiana', 2);
+
+select * from states;
+
+select * from cities;
+
+insert into cities (city, state_id)
+values
+('Phoenix', 13), ('Tucson', 13), ('kokomo', 14), ('Bloomington', 14);
+
+select * from cities;
+________________________________________________________________________________________________________________
+                                           LECTURE 9
+use pracdb;
+
+select * from cities;
+
+//records will arrange in alphabetical order...
+select * from cities order by city_id;
+
+select * from cities order by city_id desc;
+
+//to get the data of first four records...
+select * from cities limit 4;
+
+select * from cities order by city_id desc limit 4;
+
+select * from cities limit 4;
+
+select * from cities order by city_id asc limit 4;
+
+//to show first four records starting from off-set index 2...
+select * from cities limit 2, 4;
+
+//to show records in descending order...
+select * from cities order by city_id desc;
+
+select * from cities order by city_id desc limit 3, 4;
+
+//to print records below 4 and 12 above...
+select * from cities where city_id>4 and city_id<12;
+
+select * from  cities where city_id between 5 and 11; //5 and 11 is inclusive...
+
+select * from cities where city_id>4 && city_id<12;
+
+select * from cities where city_id in (3, 6, 9, 12, 14); //<-show only these records...
+________________________________________________________________________________________________________________
+                                           LECTURE 10
+use pracdb;
+
+select * from students;
+
+//how to change date-of-birth and address of any user...
+update students set address = 'House no. 211/13, Vikram Nagar' where student_id = 2;
+
+select * from students;
+
+update students
+set dob = '1992-03-07',address = 'Saksham Nagar, Flat no. 203' where student_id = 3;
+
+select * from students;
+
+insert into students
+(name,dob,address,city_id)
+values
+('Amar', '2008-05-21', 'Vijay Nagar', 1),
+('Aman', '2001-09-02', 'sahil Nagar', 3);
+
+select * from students;
+
+//the names which starts with am will get print...
+select * from students where name like 'am%';
+
+select * from cities;
+
+select * from cities where city like '%pur';
+
+insert into students
+(name,dob,address,city_id)
+values
+('Ameet', '2012-05-21','Vikas Nagar', 5),
+('Amyt', '1999-09-02', 'Manmohan Nagar', 2);
+
+select * from students;
+
+select * from students where name sounds like'amit';
+
+select * from cities where city_id in(5,6,9,12);
+
+select * from cities where city_id not in(5,6,9,12);
+
+select * from cities where city_id ! in(5,6,9,12); //error...
+
+select * from cities where city_id between 4 and 12;
+
+select * from cities where city_id not between 4 and 12;
+
+select * from cities where city_id>4 and city_id<12;
+
+select * from cities where not (city_id>4 and city_id<12);                    
+________________________________________________________________________________________________________________
+                                           LECTURE 11
+create table users
+(
+    user_id int not null auto_increment primary key,
+    user varchar(35) not null,
+    email varchar(60) not null unique
+);
+
+create table status
+(
+    status_id int not null auto_increment primary key,
+    status varchar(20) not null unique
+);
+
+insert into status
+(status) values ('Active'), ('Inactive'), ('Closed'), ('Blocked');
+
+select * from status;
+
+select * from status order by status_id;
+
+alter table users
+change column user
+name varchar(35) not null;
+
+alter table users
+add column status_id int not null,
+add constraint fk_users_status foreign key(status_id)
+references status(status_id);
+
+desc users;
+
+insert into users
+(name, email, status_id)
+values
+('mohan', 'm@g.c', 1),
+('sohan', 's@g.c', 1),
+('ganesh', 'g@g.c', 2),
+('mahesh', 'mh@g.c', 1),
+('sudheer', 'sd@g.c', 1),
+('vikram', 'v@g.c', 2),
+('prateek', 'p@g.c', 2),
+('vidyut', 'vd@g.c', 1),
+('manav', 'mv@g.c', 4),
+('danav', 'dv@g.c', 3),
+('sateesh', 'st@g.c', 2),
+('mahesh', 'mn@g.c', 3);
+
+delete from users;
+
+alter table users auto_increment = 1;
+
+insert into users
+(name, email, status_id)
+values
+('mohan', 'm@g.c', 1),
+('sohan', 's@g.c', 1),
+('ganesh', 'g@g.c', 2),
+('mahesh', 'mh@g.c', 1),
+('sudheer', 'sd@g.c', 1),
+('vikram', 'v@g.c', 2),
+('prateek', 'p@g.c', 2),
+('vidyut', 'vd@g.c', 1),
+('manav', 'mv@g.c', 4),
+('danav', 'dv@g.c', 3),
+('sateesh', 'st@g.c', 2),
+('mahesh', 'mn@g.c', 3);
+
+select * from users;
+
+select distinct status_id from users;
+
+select distinct status_id, count(*) from users; //error...
+
+select status_id, count(*) from users group by status_id;
+
+select status_id,count(*) from users group by status_id;
+
+select status_id,count(*) as count from users group by status_id;
+
+select s.status,count(*) as count from users as u inner join status as s where u.status_id=s.status_id
+group by u.status_id; 
+
+rename table users to user_accounts;
+
+show tables;
+
+//to print all records of user_account...
+select * from user_accounts;
+________________________________________________________________________________________________________________
+                                           LECTURE 12
+create table users                                         
+(
+    user_id int not null auto_increment primary key,
+    user_name varchar(35) not null,
+    email varchar(60) not null unique,
+    password varchar(15) not null
+);
+
+desc users;
+
+//now adding users records...
+insert into users
+(user_name, email, password)
+values
+('mohan kumar', 'mohan@gamil.com', '123456'),
+('sohan kumar', 'sohan@gmail.com', '789798'),
+('rohan kumar', 'rohan@gmail.com', '335478');
+
+create table messages
+(
+    message_id int auto_increment primary key,
+    user_id int not null,
+    message varchar(3000) not null
+);
+
+desc messages;
+
+drop table messages;
+
+show tables;
+
+create table messages
+(
+    message_id int auto_increment primary key,
+    user_id int not null,
+    message varchar(3000) not null,
+    constraint fk_messages_users foreign key (user_id) references users(user_id)
+);
+
+desc messages;
+
+insert into messages
+(user_id, message)
+values 
+(1, 'Hello...'),
+(3, 'Hello...'),
+(2, 'Hi...'),
+(1, 'How are you...'),
+(2, 'Bye...');
+
+select * from messages;
+
+//now suppose mohan deletes his account...
+delete from users where user_id = 1;
+
+drop tables messages;
+
+show tables;
+
+create table messages
+(
+    message_id int auto_increment primary key,
+    user_id int not null,
+    message varchar(3000) not null,
+    constraint fk_messages_users foreign key (user_id) references users(user_id) on delete cascade
+);
+
+show tables;
+
+insert into messages
+(user_id, message)
+values 
+(1, 'Hello...'),
+(3, 'Hello...'),
+(2, 'Hi...'),
+(1, 'How are you...'),
+(1, 'Bye...');
+
+select * from messages;
+
+delete from users where user_id = 1;
+
+select * from users;
+
+select * from messages;
+__________________________________________________________________________________________________________________
+                              ISRDC ALL 12 lectures completed.
