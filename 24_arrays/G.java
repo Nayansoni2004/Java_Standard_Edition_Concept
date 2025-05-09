@@ -9,7 +9,9 @@ class G {
     }
 }
 
-/* Exception at runtime :
+/* Exception at runtime : because compiler checks that ref. is of type Animal & array object is of type Dog which
+   is okk, but at runtime the runtime checks the array object is of dog and cat object can't be assigned into Dog 
+   array so exception occurs(ArrayStoreException).
 Exception in thread "main" java.lang.ArrayStoreException: Cat
         at G.main(G.java:6)
  */
