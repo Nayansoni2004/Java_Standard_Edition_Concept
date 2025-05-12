@@ -11,8 +11,8 @@ class O {
 
     }
 }
-/* OUTPUT: printed bydefault initialized values at indexes of each inner 1d array objects inside 2d outer array
-            using nested for loop.
+/* OUTPUT: printed bydefault initialized values at indexes of each inner 1d array objects inside 2d outer array of
+           type (int) using nested for loop.
 0 0 0 0 
 0 0 0 0  
  */
