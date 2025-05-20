@@ -7,6 +7,12 @@ class D {
         System.out.print("Enter a number: ");
 
         int n = sc.nextInt();
-        String[] names = new String[];
+        String[] names = new String[n];
+
+        sc.nextLine();
+
+        for(int i = 0 ; i < n ; i++) {
+            System.out.print("Enter name: ");
+        }
     }
 }
