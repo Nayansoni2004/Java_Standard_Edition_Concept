@@ -9,3 +9,8 @@ public class H {
         System.out.println((a == b));
     }
 }
+/*
+OUTPUT
+12
+false
+ */
