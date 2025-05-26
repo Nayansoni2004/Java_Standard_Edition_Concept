@@ -10,6 +10,7 @@ public class H {
     }
 }
 /*
+concept of re-initialization..
 OUTPUT
 12
 false
