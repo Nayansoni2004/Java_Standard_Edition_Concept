@@ -5,3 +5,6 @@ class L {
         int[] y = .......;
     }
 }
+/*
+ * an example of reversing the array ....
+ */
