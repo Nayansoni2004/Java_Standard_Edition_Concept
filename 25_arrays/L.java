@@ -6,5 +6,5 @@ class L {
     }
 }
 /*
- * an example of reversing the array ....
+ * This example is a question to reverse the x array & store its elements in y array. refer to L1.java
  */
