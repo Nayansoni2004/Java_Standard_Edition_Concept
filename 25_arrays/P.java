@@ -3,6 +3,6 @@ public class P {
     public static void main(String[] args) {
         int[][] x = {{2, 9, 7, 3, 4}, {5, 8, 11}, {3, 5}, {8}};
 
-        int[][] y = new int[x.length][]; //created 2d array y of same length
+        int[][] y = new int[x.length][]; //created 2d array y of same length as of x
     }    
 }
